@@ -25,4 +25,33 @@ const list = [
   },
 ];
 
-console.log(list);
+class BooksTable {
+  constructor(data) {
+    this.data = data;
+    this.tableBody = document.querySelector(".table__body--js");
+    this.template = document.querySelector(".template--js");
+  }
+
+  fillTemplate(book) {
+    this.template.content.querySelector(".row__id--js").innerHTML = book.id;
+    this.template.content.querySelector(".row__title--js").innerHTML =
+      book.polishTitle;
+    this.template.content.querySelector(".row__pages--js").innerHTML =
+      book.numberOfPages;
+    this.template.content.querySelector(".row__date--js").innerHTML =
+      book.releaseDate;
+    return this.template.content;
+  }
+
+  createRows() {
+    this.data.forEach((book) => {
+      const row = document.importNode(this.fillTemplate(book), true);
+      this.tableBody.appendChild(row);
+    });
+  }
+}
+
+const table = new BooksTable(list);
+console.log(table);
+
+table.createRows();
