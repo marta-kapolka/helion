@@ -23,6 +23,24 @@ const list = [
     numberOfPages: 127,
     releaseDate: "2018-02-26",
   },
+  {
+    id: 5,
+    polishTitle: "i jeszcze",
+    numberOfPages: 227,
+    releaseDate: "2016-02-26",
+  },
+  {
+    id: 6,
+    polishTitle: "napisali",
+    numberOfPages: 284,
+    releaseDate: "2018-07-11",
+  },
+  {
+    id: 7,
+    polishTitle: "jeszcze",
+    numberOfPages: 63,
+    releaseDate: "2018-02-19",
+  },
 ];
 
 class BooksTable {
@@ -32,22 +50,56 @@ class BooksTable {
     this.template = document.querySelector(".template--js");
   }
 
-  fillTemplate(book) {
-    this.template.content.querySelector(".row__id--js").innerHTML = book.id;
-    this.template.content.querySelector(".row__title--js").innerHTML =
-      book.polishTitle;
-    this.template.content.querySelector(".row__pages--js").innerHTML =
-      book.numberOfPages;
-    this.template.content.querySelector(".row__date--js").innerHTML =
-      book.releaseDate;
-    return this.template.content;
+  checkBookKeys(book) {
+    // checks if book passed into function has proper keys, returns true if ok
+    const properKeys = ["id", "polishTitle", "numberOfPages", "releaseDate"];
+    const bookKeys = Object.keys(book);
+    return (
+      Array.isArray(bookKeys) &&
+      bookKeys.length === properKeys.length &&
+      bookKeys.every((key, index) => key === properKeys[index])
+    );
+  }
+
+  checkBookValues(book) {
+    // checks if types of book's values and date format are ok, returns true if ok
+    const dateRegex = new RegExp("^\\d{4}-\\d{2}-\\d{2}$");
+    return (
+      typeof book.id === "number" &&
+      typeof book.polishTitle === "string" &&
+      typeof book.numberOfPages === "number" &&
+      typeof book.releaseDate === "string" &&
+      dateRegex.test(book.releaseDate)
+    );
+  }
+
+  fillTemplate(book, index) {
+    // pass index to catch where eventual errors are
+    if (!this.checkBookKeys(book)) {
+      throw new Error(`Incorrect data keys on index ${index} in data array`);
+    } else if (!this.checkBookValues(book)) {
+      throw new Error(`Incorrect data values on index ${index} in data array`);
+    } else {
+      this.template.content.querySelector(".row__id--js").innerHTML = book.id;
+      this.template.content.querySelector(".row__title--js").innerHTML =
+        book.polishTitle;
+      this.template.content.querySelector(".row__pages--js").innerHTML =
+        book.numberOfPages;
+      this.template.content.querySelector(".row__date--js").innerHTML =
+        book.releaseDate;
+      return this.template.content;
+    }
   }
 
   createRows() {
-    this.data.forEach((book) => {
-      const row = document.importNode(this.fillTemplate(book), true);
-      this.tableBody.appendChild(row);
-    });
+    try {
+      this.data.forEach((book, index) => {
+        const row = document.importNode(this.fillTemplate(book, index), true);
+        this.tableBody.appendChild(row);
+      });
+    } catch (e) {
+      console.error(e);
+    }
   }
 }
 

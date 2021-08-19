@@ -4,11 +4,16 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css"
+      rel="stylesheet"
+      type="text/css"
+    />
     <title>Document</title>
   </head>
   <body>
     <h1>Książki</h1>
-    <table class="sortable">
+    <table class="sortable table--js">
       <thead>
         <tr>
           <th>ID</th>
@@ -27,7 +32,7 @@
         ></template>
       </tbody>
     </table>
-    <script src="index.js"></script>
+    <script src="index.js" type="module"></script>
     <script src="sorttable.js"></script>
   </body>
 </html>
