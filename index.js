@@ -1,42 +1,42 @@
 const list = [
   {
-    id: 1,
+    id: "ABCD",
     polishTitle: "tytuł",
     numberOfPages: 175,
     releaseDate: "2019-05-28",
   },
   {
-    id: 2,
+    id: "ARCD",
     polishTitle: "tytuł jeszcze jakiś",
     numberOfPages: 283,
     releaseDate: "2021-03-17",
   },
   {
-    id: 3,
+    id: "SBJD",
     polishTitle: "kolejny tytuł",
     numberOfPages: 93,
     releaseDate: "2015-10-03",
   },
   {
-    id: 4,
+    id: "CKWD",
     polishTitle: "coś jeszcze napisali",
     numberOfPages: 127,
     releaseDate: "2018-02-26",
   },
   {
-    id: 5,
+    id: "PWFB",
     polishTitle: "i jeszcze",
     numberOfPages: 227,
     releaseDate: "2016-02-26",
   },
   {
-    id: 6,
+    id: "SOBA",
     polishTitle: "napisali",
     numberOfPages: 284,
     releaseDate: "2018-07-11",
   },
   {
-    id: 7,
+    id: "WGBI",
     polishTitle: "jeszcze",
     numberOfPages: 63,
     releaseDate: "2018-02-19",
@@ -91,7 +91,7 @@ class BooksTable {
     // checks if types of book's values and date format are ok, returns true if ok
     const dateRegex = new RegExp("^\\d{4}-\\d{2}-\\d{2}$");
     return (
-      typeof book.id === "number" &&
+      typeof book.id === "string" &&
       typeof book.polishTitle === "string" &&
       typeof book.numberOfPages === "number" &&
       typeof book.releaseDate === "string" &&
