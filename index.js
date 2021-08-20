@@ -43,11 +43,37 @@ const list = [
   },
 ];
 
+const list2 = [];
+
 class BooksTable {
   constructor(data) {
-    this.data = data;
+    this.data = this.getData(data);
     this.tableBody = document.querySelector(".table__body--js");
     this.template = document.querySelector(".template--js");
+  }
+
+  checkData(data) {
+    if (!Array.isArray(data)) {
+      throw new Error("Data is not in an array");
+    } else if (data.length === 0) {
+      throw new Error("Data array is empty");
+    } else if (
+      data.some((book) => {
+        return typeof book !== "object" || book === null || Array.isArray(book);
+      })
+    ) {
+      throw new Error("There are non object values in data array");
+    } else {
+      return data;
+    }
+  }
+
+  getData(data) {
+    try {
+      return this.checkData(data);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   checkBookKeys(book) {
@@ -97,8 +123,8 @@ class BooksTable {
         const row = document.importNode(this.fillTemplate(book, index), true);
         this.tableBody.appendChild(row);
       });
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      console.error(error);
     }
   }
 }
