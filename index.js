@@ -76,11 +76,17 @@ class BooksTable {
         input.removeEventListener("keyup", filter);
       });
     });
-    this.renderRows();
+    try {
+      this.renderRows();
+    } catch (error) {
+      console.error(error);
+    }
   }
   // if there is a lot of data "keyup" event should be replaced with "change" - less convenient for user, but with a lot of data filtering on "keyup" may result in performance problems
 
   checkData(data) {
+    let keyErrorIndex = -1; // variable to store on which index of data array there is eventual problem with object keys
+    let valueErrorIndex = -1; // variable to store on which index of data array there is eventual problem with object values
     if (!Array.isArray(data)) {
       // check if data is array
       throw new Error("Data is not in an array");
@@ -94,25 +100,29 @@ class BooksTable {
       })
     ) {
       throw new Error("There are non object values in data array");
+    } else if (
+      // checks if each book object has correct keys
+      !data.every((book) => {
+        keyErrorIndex++; // points which array index is currently checked
+        return this.checkBookKeys(book);
+      })
+    ) {
+      throw new Error(
+        `Incorrect data key on index ${keyErrorIndex} in data array`
+      );
+    } else if (
+      // checks if each book object has correct value types and date format
+      !data.every((book) => {
+        valueErrorIndex++; // points which array index is currently checked
+        return this.checkBookValues(book);
+      })
+    ) {
+      throw new Error(
+        `Incorrect data value on index ${valueErrorIndex} in data array`
+      );
     } else {
       return data;
     }
-  }
-
-  getData(data) {
-    try {
-      return this.checkData(data);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  getInputValue(input) {
-    return document.querySelector(`[data-column="${input}"]`).value;
-  }
-
-  updateInputValue(input) {
-    this.inputValues[`${input}`] = this.getInputValue(input);
   }
 
   checkBookKeys(book) {
@@ -138,34 +148,42 @@ class BooksTable {
     );
   }
 
-  fillTemplate(book, index) {
-    // pass index to catch where eventual errors are
-    if (!this.checkBookKeys(book)) {
-      throw new Error(`Incorrect data keys on index ${index} in data array`);
-    } else if (!this.checkBookValues(book)) {
-      throw new Error(`Incorrect data values on index ${index} in data array`);
-    } else {
-      this.template.content.querySelector(".row__id--js").innerHTML = book.id;
-      this.template.content.querySelector(".row__title--js").innerHTML =
-        book.title;
-      this.template.content.querySelector(".row__pages--js").innerHTML =
-        book.pages;
-      this.template.content.querySelector(".row__date--js").innerHTML =
-        book.date;
-      return this.template.content;
+  getData(data) {
+    try {
+      return this.checkData(data);
+    } catch (error) {
+      console.error(error);
     }
   }
 
+  getInputValue(input) {
+    return document.querySelector(`[data-column="${input}"]`).value;
+  }
+
+  updateInputValue(input) {
+    this.inputValues[`${input}`] = this.getInputValue(input);
+  }
+
+  fillTemplate(book) {
+    this.template.content.querySelector(".row__id--js").innerHTML = book.id;
+    this.template.content.querySelector(".row__title--js").innerHTML =
+      book.title;
+    this.template.content.querySelector(".row__pages--js").innerHTML =
+      book.pages;
+    this.template.content.querySelector(".row__date--js").innerHTML = book.date;
+    return this.template.content;
+  }
+
   renderRows() {
-    this.tableBody.innerHTML = ""; // clears table body
-    try {
+    if (this.dataToPresent) {
+      this.tableBody.innerHTML = ""; // clears table body
       this.dataToPresent.forEach((book, index) => {
         // pass index to catch where eventual errors are
         const row = document.importNode(this.fillTemplate(book, index), true);
         this.tableBody.appendChild(row);
       });
-    } catch (error) {
-      console.error(error);
+    } else {
+      throw new Error("There is no dataToPresent");
     }
   }
 
