@@ -57,6 +57,7 @@ class BooksTable {
       pages: this.getInputValue("pages"),
       date: this.getInputValue("date"),
     };
+    this.sorting = { sorted: false, column: null, rising: true };
 
     this.init(); // adds event listeners to inputs, renders initial data
   }
@@ -85,8 +86,30 @@ class BooksTable {
   // if there is a lot of data "keyup" event should be replaced with "change" - less convenient for user, but with a lot of data filtering on "keyup" may result in performance problems
 
   checkData(data) {
+    const checkBookKeys = (book) => {
+      // checks if book passed into function has proper keys, returns true if ok
+      const properKeys = ["id", "title", "pages", "date"];
+      const bookKeys = Object.keys(book);
+      return (
+        Array.isArray(bookKeys) &&
+        bookKeys.length === properKeys.length &&
+        bookKeys.every((key, index) => key === properKeys[index])
+      );
+    };
+    const checkBookValues = (book) => {
+      // checks if types of book's values and date format are ok, returns true if ok
+      const dateRegex = new RegExp("^\\d{4}-\\d{2}-\\d{2}$");
+      return (
+        typeof book.id === "string" &&
+        typeof book.title === "string" &&
+        typeof book.pages === "number" &&
+        typeof book.date === "string" &&
+        dateRegex.test(book.date)
+      );
+    };
     let keyErrorIndex = -1; // variable to store on which index of data array there is eventual problem with object keys
     let valueErrorIndex = -1; // variable to store on which index of data array there is eventual problem with object values
+
     if (!Array.isArray(data)) {
       // check if data is array
       throw new Error("Data is not in an array");
@@ -104,7 +127,7 @@ class BooksTable {
       // checks if each book object has correct keys
       !data.every((book) => {
         keyErrorIndex++; // points which array index is currently checked
-        return this.checkBookKeys(book);
+        return checkBookKeys(book);
       })
     ) {
       throw new Error(
@@ -114,7 +137,7 @@ class BooksTable {
       // checks if each book object has correct value types and date format
       !data.every((book) => {
         valueErrorIndex++; // points which array index is currently checked
-        return this.checkBookValues(book);
+        return checkBookValues(book);
       })
     ) {
       throw new Error(
@@ -123,29 +146,6 @@ class BooksTable {
     } else {
       return data;
     }
-  }
-
-  checkBookKeys(book) {
-    // checks if book passed into function has proper keys, returns true if ok
-    const properKeys = ["id", "title", "pages", "date"];
-    const bookKeys = Object.keys(book);
-    return (
-      Array.isArray(bookKeys) &&
-      bookKeys.length === properKeys.length &&
-      bookKeys.every((key, index) => key === properKeys[index])
-    );
-  }
-
-  checkBookValues(book) {
-    // checks if types of book's values and date format are ok, returns true if ok
-    const dateRegex = new RegExp("^\\d{4}-\\d{2}-\\d{2}$");
-    return (
-      typeof book.id === "string" &&
-      typeof book.title === "string" &&
-      typeof book.pages === "number" &&
-      typeof book.date === "string" &&
-      dateRegex.test(book.date)
-    );
   }
 
   getData(data) {
@@ -157,7 +157,8 @@ class BooksTable {
   }
 
   getInputValue(input) {
-    return document.querySelector(`[data-column="${input}"]`).value;
+    return document.querySelector(`.filter__input--js[data-column="${input}"]`)
+      .value;
   }
 
   updateInputValue(input) {
@@ -177,6 +178,7 @@ class BooksTable {
   renderRows() {
     if (this.dataToPresent) {
       this.tableBody.innerHTML = ""; // clears table body
+      this.sortRows();
       this.dataToPresent.forEach((book, index) => {
         // pass index to catch where eventual errors are
         const row = document.importNode(this.fillTemplate(book, index), true);
@@ -202,7 +204,21 @@ class BooksTable {
     });
     this.renderRows();
   }
+
+  sortRows() {
+    if (this.sorting.sorted) {
+      const key = this.sorting.column;
+      this.dataToPresent.sort((a, b) => {
+        if (a[key] < b[key]) return this.sorting.rising ? -1 : 1;
+        if (a[key] > b[key]) return this.sorting.rising ? 1 : -1;
+        return 0;
+      });
+    }
+  }
 }
 
 const booksTable = new BooksTable(list);
+console.log(booksTable);
+
+booksTable.sortRows();
 console.log(booksTable);
