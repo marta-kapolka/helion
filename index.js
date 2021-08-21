@@ -77,6 +77,19 @@ class BooksTable {
         input.removeEventListener("keyup", filter);
       });
     });
+    // adds event listeners to table headers for sorting
+    const tableHeaders = document.querySelectorAll(".table-header--js");
+    tableHeaders.forEach((header) => {
+      header.addEventListener("click", (event) => {
+        this.sorting.sorted = true;
+        this.sorting.rising =
+          this.sorting.column === event.target.dataset.column // checks if data has been previously sorted by the same column...
+            ? !this.sorting.rising // ...if it has - changes the sorting order
+            : true; // ...if it hasn't - sets order to rising
+        this.sorting.column = event.target.dataset.column;
+        this.renderRows();
+      });
+    });
     try {
       this.renderRows();
     } catch (error) {
