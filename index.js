@@ -51,6 +51,12 @@ class BooksTable {
     this.dataToPresent = this.data; // data used to render rows to table - initially the same as data, but can be filtered
     this.tableBody = document.querySelector(".table__body--js");
     this.template = document.querySelector(".template--js");
+    this.inputValues = {
+      id: this.getInputValue("id"),
+      title: this.getInputValue("title"),
+      pages: this.getInputValue("pages"),
+      date: this.getInputValue("date"),
+    };
 
     this.init(); // adds event listeners to inputs, renders initial data
   }
@@ -58,19 +64,21 @@ class BooksTable {
   init() {
     // adds event listeners to filter inputs
     const inputs = document.querySelectorAll(".filter__input--js");
-    const filterRows = this.filterRows.bind(this); // creates local function that binds this (booksTable object) to its filterRows method
+    const filter = this.filterRows.bind(this);
+    // creates local function that binds this (booksTable object) to its filterRows method
     inputs.forEach((input) => {
       input.addEventListener("focusin", () => {
-        // when input is focused adds event listener for keyup (--- TODO ---: check change)
-        input.addEventListener("keyup", filterRows);
+        // when input is focused adds event listener for keyup
+        input.addEventListener("keyup", filter);
       });
       input.addEventListener("focusout", () => {
         // removes keyup listener when input is not focused
-        input.removeEventListener("keyup", filterRows);
+        input.removeEventListener("keyup", filter);
       });
     });
     this.renderRows();
   }
+  // if there is a lot of data "keyup" event should be replaced with "change" - less convenient for user, but with a lot of data filtering on "keyup" may result in performance problems
 
   checkData(data) {
     if (!Array.isArray(data)) {
@@ -97,6 +105,14 @@ class BooksTable {
     } catch (error) {
       console.error(error);
     }
+  }
+
+  getInputValue(input) {
+    return document.querySelector(`[data-column="${input}"]`).value;
+  }
+
+  updateInputValue(input) {
+    this.inputValues[`${input}`] = this.getInputValue(input);
   }
 
   checkBookKeys(book) {
@@ -154,18 +170,19 @@ class BooksTable {
   }
 
   filterRows(event) {
-    const key = event.target.dataset.column; // data-column attributes of inputs: id, title, pages, date
-    const value = event.target.value; // input value when event is fired
-
+    const column = event.target.dataset.column; // filtered column which input's value needs to be updated
+    this.updateInputValue(column); // update inputValues property in booksTable object
     this.dataToPresent = this.data.filter((book) => {
-      // sets the content of dataToPresent based on filter
-      let bookKey =
-        typeof book[`${key}`] === "number"
-          ? book[`${key}`].toString()
-          : book[`${key}`]; // makes all book values strings to make it easier to compare to values
-      return bookKey.toLowerCase().includes(value.toLowerCase());
+      // checks each book from data if its every property value includes corresponding input value
+      return Object.keys(book).every((key) => {
+        return key === "pages"
+          ? book[key].toString().includes(this.inputValues[key]) // changes "pages" value type from number to string and checks inclusion
+          : book[key]
+              .toLowerCase()
+              .includes(this.inputValues[key].toLowerCase()); // changes string property values and input values to lower case and checks inclusion
+      });
     });
-    this.renderRows(); // renders updated dataToPresent
+    this.renderRows();
   }
 }
 
