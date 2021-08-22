@@ -4,36 +4,38 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Easy to filter and sort books database in form of a table.">
     <link
-      href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css"
+      href="index.css"
       rel="stylesheet"
       type="text/css"
     />
     <title>Document</title>
   </head>
   <body>
-    <h1>Książki</h1>
-    <table class="table--js">
+    <main class="main">
+    <h1 class="title">Tabelaryczne zestawienie wydawnictw</h1>
+    <p class="description">Tabela zawiera informacje o pozycjach wydawniczych. Kliknięcie nagłówków poszczególnych kolumn pozwala posortować dane, można także filtrować dane w kolumnach wpisując pożądaną frazę w pole wyszukiwania.</p>
+    <table class="table table--js">
       <thead>
         <tr>
-          <!-- first thead row is needed to sort table, don't change the order of rows in thead -->
-          <th class="table-header--js" data-column="id">ID</th>
-          <th class="table-header--js" data-column="title">Polski tytuł</th>
-          <th class="table-header--js" data-column="pages">Ilość stron</th>
-          <th class="table-header--js" data-column="date">Data wydania</th>
+          <th class="table-header table-header--title table-header--js" data-column="id">ID<!-- <img src="/assets/arrow-min.svg" alt="data sorted rising by column id"> --></th>
+          <th class="table-header table-header--title table-header--js" data-column="title">Polski tytuł</th>
+          <th class="table-header table-header--title table-header--js" data-column="pages">Ilość stron</th>
+          <th class="table-header table-header--title table-header--js" data-column="date">Data wydania</th>
         </tr>
         <tr>
-          <th>
-            <label>szukaj: <input type="text" class="filter__input--js" data-column="id"/></label>
+          <th class="table-header">
+            <label class="filter"><span class="visually-hidden">wyszukaj:</span><input type="text" class="filter__input filter__input--js" placeholder="wyszukaj.." data-column="id"/></label>
           </th>
-          <th>
-            <label>szukaj: <input type="text" class="filter__input--js" data-column="title"/></label>
+          <th class="table-header">
+            <label class="filter"><span class="visually-hidden">wyszukaj:</span><input type="text" class="filter__input filter__input--js" placeholder="wyszukaj.." data-column="title"/></label>
           </th>
-          <th>
-            <label>szukaj: <input type="text" class="filter__input--js" data-column="pages"/> 
+          <th class="table-header">
+            <label class="filter"><span class="visually-hidden">wyszukaj:</span><input type="text" class="filter__input filter__input--js" placeholder="wyszukaj.." data-column="pages"/> 
           </th>
-          <th>
-            <label>szukaj: <input type="text" class="filter__input--js" data-column="date"/></label>
+          <th class="table-header">
+            <label class="filter"><span class="visually-hidden">wyszukaj:</span><input type="text" class="filter__input filter__input--js" placeholder="wyszukaj.." data-column="date"/></label>
           </th>
         </tr>
       </thead>
@@ -47,6 +49,8 @@
         ></template>
       </tbody>
     </table>
+  </main>
+  <footer class="footer">Created for purposes of recruitment process in HELION S.A.</footer>
     <script src="index.js" type="module"></script>
   </body>
 </html>

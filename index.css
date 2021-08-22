@@ -1,0 +1,179 @@
+/* GENERAL STYLES */
+
+html {
+  box-sizing: border-box;
+  font-size: 62.5%;
+}
+
+body {
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  font-size: 1.8rem;
+  margin: 0;
+  padding: 6rem 2rem 4rem 2rem;
+  position: relative;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+/* HIDDEN ELEMENTS */
+
+.hidden {
+  display: none;
+}
+
+.visually-hidden {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+/* MAIN */
+
+.main {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+/* TITLE STYLES */
+
+.title {
+  font-size: 3rem;
+  margin: 0;
+  text-align: center;
+}
+
+/* DESCRIPTION STYLES */
+
+.description {
+  line-height: 1.3;
+  margin: 3rem 0;
+  max-width: 90rem;
+  text-indent: 3rem;
+}
+
+/* TABLE STYLES */
+
+.table {
+  border-collapse: collapse;
+  max-width: 90rem;
+  width: 100%;
+}
+
+.table-header--title {
+  cursor: pointer;
+}
+
+thead {
+  border: 1px solid black;
+}
+
+tbody > tr:nth-child(odd) {
+  background-color: #f4f4f4;
+}
+
+th,
+td {
+  min-width: 5rem;
+  padding: 0.8rem;
+}
+
+td {
+  border: 1px solid black;
+}
+
+th:nth-of-type(1) {
+  width: 10%;
+}
+
+th:nth-of-type(3) {
+  width: 10%;
+}
+
+th:nth-of-type(4) {
+  /* min width set to avoid line breaking in date column */
+  min-width: 11rem;
+  width: 15%;
+}
+
+th:not(:last-child) {
+  border-right: 1px solid black;
+}
+
+td:not(:nth-child(2)) {
+  text-align: center;
+}
+
+.filter__input {
+  padding: 0.6rem;
+  width: 100%;
+}
+
+/* FOOTER STYLES */
+
+.footer {
+  background-color: white;
+  bottom: 0;
+  font-size: 1.2rem;
+  left: 0;
+  padding: 1rem;
+  position: fixed;
+  text-align: center;
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  /* GENERAL STYLES */
+
+  body {
+    font-size: 1.6rem;
+    padding: 3rem 1rem 4rem 1rem;
+  }
+
+  /* TITLE STYLES */
+
+  .title {
+    font-size: 2.2rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  /* DESCRIPTION STYLES */
+
+  .description {
+    line-height: 1.15;
+    margin: 1.6rem 0;
+  }
+
+  /* TABLE STYLES */
+
+  th,
+  td {
+    padding: 0.4rem;
+  }
+
+  th:nth-of-type(4) {
+    min-width: 9.5rem;
+    width: 15%;
+  }
+
+  .filter__input {
+    padding: 0.4rem;
+    width: 100%;
+  }
+}
+
+@media (max-width: 340px) {
+  th:nth-of-type(4) {
+    /* allows breaking line to avoid hiding rest of table on extremely narrow screen*/
+    min-width: 5rem;
+  }
+}

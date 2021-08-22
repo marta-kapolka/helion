@@ -1,49 +1,47 @@
 const list = [
   {
-    id: "ABCD",
-    title: "tytuł",
-    pages: 175,
-    date: "2019-05-28",
+    id: "AKCIAZ",
+    title: "Aktywna ciąża dla bystrzaków",
+    pages: 384,
+    date: "2008-05-14",
   },
   {
-    id: "YRCD",
-    title: "tytuł jeszcze jakiś",
-    pages: 283,
-    date: "2021-03-17",
+    id: "AKGIBY",
+    title: "Akordy gitarowe dla bystrzaków",
+    pages: 376,
+    date: "2016-09-19",
   },
   {
-    id: "SBJD",
-    title: "kolejny tytuł",
-    pages: 93,
-    date: "2015-10-03",
+    id: "AKWABY",
+    title: "Akwarium słodkowodne dla bystrzaków",
+    pages: 320,
+    date: "2010-08-06",
   },
   {
-    id: "CKWD",
-    title: "coś jeszcze napisali",
-    pages: 127,
-    date: "2018-02-26",
+    id: "ALGOBY",
+    title: "Algorytmy dla bystrzaków",
+    pages: 424,
+    date: "2020-01-31",
   },
   {
-    id: "PWFB",
-    title: "i jeszcze",
-    pages: 227,
-    date: "2016-02-26",
+    id: "ANFIBY",
+    title: "Anatomia i fizjologia dla bystrzaków",
+    pages: 376,
+    date: "2009-03-18",
   },
   {
-    id: "SFBA",
-    title: "napisali",
-    pages: 284,
-    date: "2018-07-11",
+    id: "ANGBYS",
+    title: "Angielski dla bystrzaków",
+    pages: 325,
+    date: "2017-08-30",
   },
   {
-    id: "WGBI",
-    title: "jeszcze",
-    pages: 63,
-    date: "2018-02-19",
+    id: "ANTEB4",
+    title: "Analiza techniczna dla bystrzaków. Wydanie IV",
+    pages: 368,
+    date: "2021-03-09",
   },
 ];
-
-const list2 = [];
 
 class BooksTable {
   constructor(data) {
