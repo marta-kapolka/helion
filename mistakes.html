@@ -1,0 +1,16 @@
+<div id=”idik1” class="klasa1 klasa2">lorem</div>
+<input name=”pole1”></input> <!-- brak znacznika <label> związanego ze znacznikiem <input> -->
+<div id=”idik1” class=”klasa3”>ipsum</div> <!-- id nie jest unikatowe -->
+<div id=”idik2” class=”klasa4” class=”klasa5”>dolor amet</div> <!-- obie klasy powinny być wymienione w jednym atrybucie class - class="klasa4 klasa5" -->
+<p>tekst</br>akapitu<p>zagnieżdzony P</p></p> <!-- nie można zagnieżdżać paragrafów; znacznik <br> nie powinien mieć symbolu "/" oznaczającego zamknięcie znacznika, powinno być samo <br> -->
+
+<!-- znaczniki div nie są semantyczne, powinny służyć jedynie do grupowania lub wydzielania treści w celu stylowania, w tym wypadku de facto oznaczają paragrafy - powinny zostać zastąpione przez <p></p> -->
+<!-- nazwy klas, id i name w znaczniku input nic nie oznaczają - nie jest to błąd techniczny, ale dobrą praktyką ułatwiającą pracę z kodem jest żeby tego typu nazwy były merytoryczne -->
+
+<p id=”id1-merytoryczna_nazwa” class="klasa1-merytoryczna_nazwa klasa2-merytoryczna_nazwa">lorem</p>
+<label for="pole1-merytoryczna_nazwa">uzupełnij:</label> <!-- atrybut for o wartości takiej samej jak id odpowiadającego znacznika input -->
+<input name=”pole1-merytoryczna_nazwa” id="pole1-merytoryczna_nazwa"></input> <!-- input powinien mieć id w celu powiązania ze znacznikiem label przez atrybut for -->
+<p id=”id2-merytoryczna_nazwa” class=”klasa3-merytoryczna_nazwa”>ipsum</p>
+<p id=”id3-merytoryczna_nazwa” class="klasa4-merytoryczna_nazwa klasa5-merytoryczna_nazwa">dolor amet</p>
+<p>tekst<br>akapitu</p>
+<p>nie zagnieżdzony P</p>
