@@ -1,6 +1,6 @@
 import { BooksTable } from "./modules/BooksTable.js";
 
-fetch("test.json")
+fetch("data.json")
   .then((response) => {
     if (response.ok) {
       return response.json();
