@@ -3,7 +3,11 @@ export class BooksTable {
     this.data = this.getData(data); // pure (but formated) data from json
     this.dataToPresent = this.data; // data used to render rows to table - initially the same as data, but can be filtered
     this.tableBody = document.querySelector(".table__body--js");
-    this.template = document.querySelector(".template--js");
+    this.templateRow = document.querySelector(".template__row--js");
+    this.templateArrowUp = document.querySelector(".template__arrow-up--js");
+    this.templateArrowDown = document.querySelector(
+      ".template__arrow-down--js"
+    );
     this.inputValues = {
       id: this.getInputValue("id"),
       title: this.getInputValue("title"),
@@ -40,6 +44,7 @@ export class BooksTable {
             ? !this.sorting.rising // ...if it has - changes the sorting order
             : true; // ...if it hasn't - sets order to rising
         this.sorting.column = event.target.dataset.column;
+        this.handleSortingArrow();
         this.renderRows();
       });
     });
@@ -132,13 +137,14 @@ export class BooksTable {
   }
 
   fillTemplate(book) {
-    this.template.content.querySelector(".row__id--js").innerHTML = book.id;
-    this.template.content.querySelector(".row__title--js").innerHTML =
+    this.templateRow.content.querySelector(".row__id--js").innerHTML = book.id;
+    this.templateRow.content.querySelector(".row__title--js").innerHTML =
       book.title;
-    this.template.content.querySelector(".row__pages--js").innerHTML =
+    this.templateRow.content.querySelector(".row__pages--js").innerHTML =
       book.pages;
-    this.template.content.querySelector(".row__date--js").innerHTML = book.date;
-    return this.template.content;
+    this.templateRow.content.querySelector(".row__date--js").innerHTML =
+      book.date;
+    return this.templateRow.content;
   }
 
   renderRows() {
@@ -179,6 +185,25 @@ export class BooksTable {
         if (a[key] > b[key]) return this.sorting.rising ? 1 : -1;
         return 0;
       });
+    }
+  }
+
+  handleSortingArrow() {
+    if (this.sorting.sorted) {
+      const oldArrow = document.querySelector(".arrow");
+      if (oldArrow) oldArrow.remove();
+      const column = this.sorting.column;
+      let arrow;
+      if (this.sorting.rising) {
+        arrow = document.importNode(this.templateArrowUp.content, true);
+      } else {
+        arrow = document.importNode(this.templateArrowDown.content, true);
+      }
+
+      const headerElement = document.querySelector(
+        `.table-header--js[data-column="${column}"]`
+      );
+      headerElement.appendChild(arrow);
     }
   }
 }

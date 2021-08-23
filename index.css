@@ -72,6 +72,15 @@ body {
   cursor: pointer;
 }
 
+.arrow {
+  height: 1rem;
+  margin-left: 0.6rem;
+}
+
+.arrow--down {
+  transform: rotate(180deg);
+}
+
 thead {
   border: 1px solid black;
 }

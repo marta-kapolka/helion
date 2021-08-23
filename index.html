@@ -19,7 +19,9 @@
     <table class="table table--js">
       <thead>
         <tr>
-          <th class="table-header table-header--title table-header--js" data-column="id">ID<!-- <img src="/assets/arrow-min.svg" alt="data sorted rising by column id"> --></th>
+          <template class="template__arrow-up--js"><img src="/assets/arrow-min.svg" class="arrow" alt="dane posortowane rosnąco"></template>
+          <template class="template__arrow-down--js"><img src="/assets/arrow-min.svg" class="arrow arrow--down" alt="dane posortowane malejąco"></template>
+          <th class="table-header table-header--title table-header--js" data-column="id">ID</th>
           <th class="table-header table-header--title table-header--js" data-column="title">Polski tytuł</th>
           <th class="table-header table-header--title table-header--js" data-column="pages">Ilość stron</th>
           <th class="table-header table-header--title table-header--js" data-column="date">Data wydania</th>
@@ -40,7 +42,7 @@
         </tr>
       </thead>
       <tbody class="table__body--js">
-        <template class="template--js"
+        <template class="template__row--js"
           ><tr class="row">
             <td class="row__id--js"></td>
             <td class="row__title--js"></td>
