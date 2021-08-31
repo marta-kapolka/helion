@@ -1,3 +1,5 @@
+import { Validator } from "./Validator.js";
+
 export class BooksTable {
   constructor(data) {
     this.data = this.getData(data); // pure (but formated) data from json
@@ -40,14 +42,16 @@ export class BooksTable {
       header.addEventListener("click", (event) => {
         this.sorting.sorted = true;
         this.sorting.rising =
-          this.sorting.column === event.target.dataset.column // checks if data has been previously sorted by the same column...
+          this.sorting.column === event.target.closest("th").dataset.column // checks if data has been previously sorted by the same column...
             ? !this.sorting.rising // ...if it has - changes the sorting order
             : true; // ...if it hasn't - sets order to rising
-        this.sorting.column = event.target.dataset.column;
+        this.sorting.column = event.target.closest("th").dataset.column;
         this.handleSortingArrow();
         this.renderRows();
       });
     });
+    console.log(this);
+
     try {
       this.renderRows();
     } catch (error) {
@@ -56,75 +60,8 @@ export class BooksTable {
   }
   // if there is a lot of data "keyup" event should be replaced with "change" - less convenient for user, but with a lot of data filtering on "keyup" may result in performance problems
 
-  checkData(data) {
-    const checkBookKeys = (book) => {
-      // checks if book passed into function has proper keys, returns true if ok
-      const properKeys = ["id", "title", "pages", "date"];
-      const bookKeys = Object.keys(book);
-      return (
-        Array.isArray(bookKeys) &&
-        bookKeys.length === properKeys.length &&
-        bookKeys.every((key, index) => key === properKeys[index])
-      );
-    };
-    const checkBookValues = (book) => {
-      // checks if types of book's values and date format are ok, returns true if ok
-      const dateRegex = new RegExp("^\\d{4}-\\d{2}-\\d{2}$");
-      return (
-        typeof book.id === "string" &&
-        typeof book.title === "string" &&
-        typeof book.pages === "number" &&
-        typeof book.date === "string" &&
-        dateRegex.test(book.date)
-      );
-    };
-    let keyErrorIndex = -1; // variable to store on which index of data array there is eventual problem with object keys
-    let valueErrorIndex = -1; // variable to store on which index of data array there is eventual problem with object values
-
-    if (!Array.isArray(data)) {
-      // check if data is array
-      throw new Error("Data is not in an array");
-    } else if (data.length === 0) {
-      // check if data is not empty
-      throw new Error("Data array is empty");
-    } else if (
-      // check if all array items are real object (not null or array)
-      data.some((book) => {
-        return typeof book !== "object" || book === null || Array.isArray(book);
-      })
-    ) {
-      throw new Error("There are non object values in data array");
-    } else if (
-      // checks if each book object has correct keys
-      !data.every((book) => {
-        keyErrorIndex++; // points which array index is currently checked
-        return checkBookKeys(book);
-      })
-    ) {
-      throw new Error(
-        `Incorrect data key on index ${keyErrorIndex} in data array`
-      );
-    } else if (
-      // checks if each book object has correct value types and date format
-      !data.every((book) => {
-        valueErrorIndex++; // points which array index is currently checked
-        return checkBookValues(book);
-      })
-    ) {
-      throw new Error(
-        `Incorrect data value on index ${valueErrorIndex} in data array`
-      );
-    } else {
-      return data;
-    }
-  }
-
   getData(data) {
-    try {
-      return this.checkData(data);
-    } catch (error) {
-      console.error(error);
-    }
+    return new Validator(data).validate();
   }
 
   getInputValue(input) {
@@ -191,16 +128,17 @@ export class BooksTable {
   handleSortingArrow() {
     if (this.sorting.sorted) {
       const oldArrow = document.querySelector(".arrow");
-      if (oldArrow) oldArrow.remove();
+      if (oldArrow) oldArrow.remove(); // deletes any existing arrow
       const column = this.sorting.column;
       let arrow;
       if (this.sorting.rising) {
+        // chooses the right arrow template (up or down) ----- TODO: change only class to rotate arrow
         arrow = document.importNode(this.templateArrowUp.content, true);
       } else {
         arrow = document.importNode(this.templateArrowDown.content, true);
       }
-
       const headerElement = document.querySelector(
+        // checks on which column data is being sorted and adds arrow to the right one
         `.table-header--js[data-column="${column}"]`
       );
       headerElement.appendChild(arrow);
